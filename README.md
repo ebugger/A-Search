@@ -10,7 +10,7 @@
    - g = 0, where g is the cost for each move.
    - h given by the heuristic function (a function of the current coordinates and the goal).
    
-3. Add the new node to the list of open nodes.
+3. Add the new node to the list of open nodes and set node as closed in the grid.
 
 4. **while** the list of open nodes is nonempty:
 
@@ -26,3 +26,6 @@
        - Mark the cell as closed.
        
 5. If you exit the while loop because the list of open nodes is empty, you have run out of new nodes to explore and haven't found a path.
+
+The emoji:🏔️ displayed on the grid path is parted of Unicode:
+https://emojipedia.org/emoji-1.0/
