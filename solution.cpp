@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "test.cpp"
 using std::cout;
 using std::ifstream;
 using std::istringstream;
@@ -79,8 +80,8 @@ bool CheckValidCell(int x, int y, vector<vector<State>> &grid) {
   bool on_grid_x = (x >= 0 && x < grid.size());
   bool on_grid_y = (y >= 0 && y < grid[0].size());
   if (on_grid_x && on_grid_y)
-    return grid[x][y] == State::kEmpty;
-  return false;
+    return grid[x][y] == State::kEmpty; //check not Obstacle,not closed return true
+  return false;  //else return false
 }
 
 
@@ -179,7 +180,6 @@ void PrintBoard(const vector<vector<State>> board) {
   }
 }
 
-#include "test.cpp"
 
 int main() {
   int init[2]{0, 0};

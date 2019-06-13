@@ -24,7 +24,7 @@ vector<State> ParseLine(string line) {
     int n;
     char c;
     vector<State> row;
-    while (sline >> n >> c && c == ',') {
+    while (sline >> n >> c && c == ',') { //Characters are extracted from this stream until ',' reached.
       if (n == 0) {
         row.push_back(State::kEmpty);
       } else {
@@ -37,7 +37,7 @@ vector<State> ParseLine(string line) {
 
 vector<vector<State>> ReadBoardFile(string path) {
   ifstream myfile (path);
-  vector<vector<State>> board{};
+  vector<vector<State>> board{};  //2D board
   if (myfile) {
     string line;
     while (getline(myfile, line)) {
@@ -86,7 +86,7 @@ bool CheckValidCell(int x, int y, vector<vector<State>> &grid) {
 
 
 /** 
- * Add a node to the open list and mark it as open. 
+ * Add a node to the open list and mark it as kClosed. 
  */
 void AddToOpen(int x, int y, int g, int h, vector<vector<int>> &openlist, vector<vector<State>> &grid) {
   // Add node to open vector, and mark grid cell as closed.
@@ -125,26 +125,36 @@ void ExpandNeighbors(const vector<int> &current, int goal[2], vector<vector<int>
  */
 vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2]) {
   // Create the vector of open nodes.
+  //1. Initialize an empty list of open nodes.
   vector<vector<int>> open {};
   
+  //2.Initialize a starting node with the following:
   // Initialize the starting node.
   int x = init[0];
   int y = init[1];
+  //g is the cost for each move.
   int g = 0;
+  //a function of the current coordinates and the goal
   int h = Heuristic(x, y, goal[0],goal[1]);
+
+  //3.Add the new node to the list of open nodes, AND set grid state of the node as closed.
   AddToOpen(x, y, g, h, open, grid);
 
+  //4.4. while the list of open nodes is nonempty:
   while (open.size() > 0) {
     // Get the next node
+    //1.Sort the open list by f-value
     CellSort(&open);
+    //2.Pop the optimal cell (called the current cell).
     auto current = open.back();
     open.pop_back();
+    //3.Mark the cell's coordinates in the grid as part of the path.
     x = current[0];
     y = current[1];
     grid[x][y] = State::kPath;
-    // Check if we're done.
+    // 4. Check if we're done.if the current cell is the goal cell,return the grid
     if (x == goal[0] && y == goal[1]) {
-      // TODO: Set the init grid cell to kStart, and 
+      // Completed: Set the init grid cell to kStart, and 
       // set the goal grid cell to kFinish before returning the grid. 
       grid[x][y] = State::kFinish;
       grid[init[0]][init[1]] = State::kStart;
@@ -152,7 +162,7 @@ vector<vector<State>> Search(vector<vector<State>> grid, int init[2], int goal[2
       return grid;
     }
     
-    // If we're not done, expand search to current node's neighbors.
+    //5. else If we're not done, expand search to current node's neighbors.
     ExpandNeighbors(current, goal, open, grid);
   }
   
